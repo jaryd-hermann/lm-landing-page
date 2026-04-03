@@ -57,8 +57,6 @@
       font-size: 13px;
       font-weight: 400;
       color: rgba(255,255,255,0.85);
-      position: relative;
-      z-index: 300;
     }
     .top-banner a { color: #fff; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; margin-left: 6px; }
     .top-banner a:hover { opacity: 0.8; }
@@ -633,6 +631,7 @@
       /* 7: hide desktop nav, show mobile nav */
       .nav-wrap { display: none; }
       .mobile-nav { display: block; }
+      body { padding-top: 68px; }
 
       .feature-split, .feature-split.reverse { grid-template-columns: 1fr; }
       .feature-split.reverse .feature-split-img { order: 0; }
@@ -1177,12 +1176,9 @@
     // ── Nav offset — scroll-aware (1)
     const banner = document.getElementById('top-banner');
     const navWrap = document.getElementById('nav-wrap');
-    const mobileNavEl = document.getElementById('mobile-nav');
     function updateNavPos() {
-      if (!banner) return;
       const bannerBottom = banner.getBoundingClientRect().bottom;
-      if (navWrap) navWrap.style.top = bannerBottom > 0 ? (bannerBottom + 10) + 'px' : '12px';
-      if (mobileNavEl) mobileNavEl.style.top = bannerBottom > 0 ? bannerBottom + 'px' : '0px';
+      navWrap.style.top = bannerBottom > 0 ? (bannerBottom + 10) + 'px' : '12px';
     }
     updateNavPos();
     window.addEventListener('scroll', updateNavPos, { passive: true });
