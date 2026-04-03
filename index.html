@@ -57,6 +57,8 @@
       font-size: 13px;
       font-weight: 400;
       color: rgba(255,255,255,0.85);
+      position: relative;
+      z-index: 300;
     }
     .top-banner a { color: #fff; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; margin-left: 6px; }
     .top-banner a:hover { opacity: 0.8; }
@@ -1177,9 +1179,10 @@
     const navWrap = document.getElementById('nav-wrap');
     const mobileNavEl = document.getElementById('mobile-nav');
     function updateNavPos() {
+      if (!banner) return;
       const bannerBottom = banner.getBoundingClientRect().bottom;
-      navWrap.style.top = bannerBottom > 0 ? (bannerBottom + 10) + 'px' : '12px';
-      mobileNavEl.style.top = bannerBottom > 0 ? bannerBottom + 'px' : '0px';
+      if (navWrap) navWrap.style.top = bannerBottom > 0 ? (bannerBottom + 10) + 'px' : '12px';
+      if (mobileNavEl) mobileNavEl.style.top = bannerBottom > 0 ? bannerBottom + 'px' : '0px';
     }
     updateNavPos();
     window.addEventListener('scroll', updateNavPos, { passive: true });
