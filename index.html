@@ -646,7 +646,6 @@
       .phil-nav { padding: 0 28px 40px; }
       .cta-card { border-radius: 24px; }
       .ask-box { padding: 36px 24px; }
-      .top-banner { padding-top: 70px; }
       #hero { padding: 100px 20px 60px; }
       .hero-sub { font-size: 16px; }
       .hero-illustration { display: none; }
@@ -1176,9 +1175,11 @@
     // ── Nav offset — scroll-aware (1)
     const banner = document.getElementById('top-banner');
     const navWrap = document.getElementById('nav-wrap');
+    const mobileNavEl = document.getElementById('mobile-nav');
     function updateNavPos() {
       const bannerBottom = banner.getBoundingClientRect().bottom;
       navWrap.style.top = bannerBottom > 0 ? (bannerBottom + 10) + 'px' : '12px';
+      mobileNavEl.style.top = bannerBottom > 0 ? bannerBottom + 'px' : '0px';
     }
     updateNavPos();
     window.addEventListener('scroll', updateNavPos, { passive: true });
