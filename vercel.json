@@ -1,16 +1,8 @@
 {
-  "headers": [
-    {
-      "source": "/share/(.*)",
-      "headers": [
-        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
-      ]
-    }
-  ],
   "rewrites": [
     {
       "source": "/share/:token",
-      "destination": "https://smwmkeoljqnifaoqzemb.supabase.co/functions/v1/shared-moment/:token"
+      "destination": "/api/share/:token"
     }
   ]
 }
