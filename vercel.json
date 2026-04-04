@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/share/:token",
+      "destination": "https://smwmkeoljqnifaoqzemb.supabase.co/functions/v1/shared-moment/:token"
+    }
+  ]
+}
