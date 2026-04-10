@@ -169,7 +169,7 @@
       font-weight: 700;
       color: var(--text);
     }
-    .hero-fixes-lm {
+    .hero-fixes-text .hero-fixes-lm {
       font-family: var(--font-ui);
       font-weight: 700;
       font-style: normal;
@@ -786,6 +786,14 @@
 
     // ── Tooltip setup
     let activeTooltip = null;
+    let activeOverlay = null;
+    const canHover = window.matchMedia('(hover: hover)').matches;
+
+    function closeActiveTooltip() {
+      if (activeTooltip) { activeTooltip.classList.remove('show'); activeTooltip = null; }
+      if (activeOverlay) { activeOverlay.remove(); activeOverlay = null; }
+    }
+
     function setupTooltips(container) {
       container.querySelectorAll('.feature-keyword').forEach(kw => {
         const feature = kw.dataset.feature;
@@ -795,20 +803,31 @@
         tooltip.className = 'feature-tooltip';
         tooltip.innerHTML = `<img src="${data.img}" alt="${feature}"/><div class="feature-tooltip-text">${data.desc}</div>`;
         kw.appendChild(tooltip);
-        kw.addEventListener('mouseenter', () => tooltip.classList.add('show'));
-        kw.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+
+        if (canHover) {
+          kw.addEventListener('mouseenter', () => tooltip.classList.add('show'));
+          kw.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+        }
+
         kw.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          if (activeTooltip && activeTooltip !== tooltip) activeTooltip.classList.remove('show');
-          tooltip.classList.toggle('show');
-          activeTooltip = tooltip.classList.contains('show') ? tooltip : null;
+          if (activeTooltip === tooltip) { closeActiveTooltip(); return; }
+          closeActiveTooltip();
+          tooltip.classList.add('show');
+          activeTooltip = tooltip;
+          // On touch devices, add backdrop overlay to dismiss
+          if (!canHover) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:49;background:rgba(0,0,0,0.4);';
+            overlay.addEventListener('click', (ev) => { ev.stopPropagation(); closeActiveTooltip(); });
+            document.body.appendChild(overlay);
+            activeOverlay = overlay;
+          }
         });
       });
     }
-    document.addEventListener('click', () => {
-      if (activeTooltip) { activeTooltip.classList.remove('show'); activeTooltip = null; }
-    });
+    document.addEventListener('click', () => { closeActiveTooltip(); });
 
     function createPromptCards() {
       const remaining = promptCardDefs.filter(d => !usedTopics.has(d.id));
