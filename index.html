@@ -172,6 +172,8 @@
     .hero-fixes-lm {
       font-family: var(--font-ui);
       font-weight: 700;
+      font-style: normal;
+      color: #ffffff;
     }
     .hero-fixes-text span {
       font-weight: 400;
@@ -275,11 +277,20 @@
       overflow: hidden;
       z-index: 50;
       box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      pointer-events: none;
     }
     .feature-tooltip.show { display: block; }
     .feature-tooltip img { width: 100%; height: auto; object-fit: contain; display: block; }
     .feature-tooltip-text { padding: 10px 12px; font-size: 12px; line-height: 1.4; color: var(--text-secondary); }
+    @media (max-width: 768px) {
+      .feature-tooltip {
+        position: fixed;
+        bottom: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(280px, 90vw);
+      }
+    }
 
     /* User (right bubble) */
     .msg-user {
@@ -663,10 +674,10 @@
 
     // ── Resonance card solutions
     const resonanceSolutions = [
-      'Little Moments gives you one prompt a day — a single word or photo — so each day feels distinct again.',
-      'Ellie helps you dig into everyday details you\'d normally overlook.',
-      'Your memory archive becomes searchable. Last week, last month, last year — it\'s all there.',
-      'Two minutes. One prompt. Speak or type. That\'s it — the lowest friction habit you\'ll build.',
+      'A short practice of recording one memory makes each day feel distinct.',
+      'We\'ll help you notice the little things and find small details you\'d overlook.',
+      'Monthly Chapters and Threads connect your moments across time.',
+      'No blank pages. We make the prompt fun, fast, and interesting.',
       'Every moment you capture is saved forever in your personal memory Capsule.',
       'Build a family archive you can share and revisit together for years to come.',
     ];
@@ -774,6 +785,7 @@
     }
 
     // ── Tooltip setup
+    let activeTooltip = null;
     function setupTooltips(container) {
       container.querySelectorAll('.feature-keyword').forEach(kw => {
         const feature = kw.dataset.feature;
@@ -783,16 +795,20 @@
         tooltip.className = 'feature-tooltip';
         tooltip.innerHTML = `<img src="${data.img}" alt="${feature}"/><div class="feature-tooltip-text">${data.desc}</div>`;
         kw.appendChild(tooltip);
-        const show = () => tooltip.classList.add('show');
-        const hide = () => tooltip.classList.remove('show');
-        kw.addEventListener('mouseenter', show);
-        kw.addEventListener('mouseleave', hide);
+        kw.addEventListener('mouseenter', () => tooltip.classList.add('show'));
+        kw.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
         kw.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
+          if (activeTooltip && activeTooltip !== tooltip) activeTooltip.classList.remove('show');
           tooltip.classList.toggle('show');
+          activeTooltip = tooltip.classList.contains('show') ? tooltip : null;
         });
       });
     }
+    document.addEventListener('click', () => {
+      if (activeTooltip) { activeTooltip.classList.remove('show'); activeTooltip = null; }
+    });
 
     function createPromptCards() {
       const remaining = promptCardDefs.filter(d => !usedTopics.has(d.id));
@@ -986,7 +1002,7 @@
         chat.appendChild(userEl);
         void userEl.offsetHeight;
         userEl.classList.add('visible');
-        userEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        userEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         setTimeout(done, 400);
       });
 
@@ -1042,8 +1058,10 @@
           item.className = 'resonance-item';
           item.innerHTML = `<span class="resonance-front"><span class="resonance-icon">${r.icon}</span> ${r.text}...</span><span class="resonance-back">${resonanceSolutions[idx]}</span>`;
           item.addEventListener('click', () => item.classList.toggle('flipped'));
-          item.addEventListener('mouseenter', () => item.classList.add('flipped'));
-          item.addEventListener('mouseleave', () => item.classList.remove('flipped'));
+          if (window.matchMedia('(hover: hover)').matches) {
+            item.addEventListener('mouseenter', () => item.classList.add('flipped'));
+            item.addEventListener('mouseleave', () => item.classList.remove('flipped'));
+          }
           list.appendChild(item);
         });
         chat.appendChild(list);
@@ -1051,7 +1069,7 @@
         setTimeout(done, 400);
       });
 
-      enqueueMessage(createEllie('<strong>Little Moments</strong> is for you.'), true);
+      enqueueMessage(createEllie('<strong>Little Moments</strong> helps you capture a lifetime of memories, starting with a single word.'), true);
       enqueueMessage(createEllie('Want to know more? Pick a topic:'), true);
       enqueuePromptCards();
     }
