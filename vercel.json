@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/terms",
+      "destination": "/legal.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/legal.html"
+    },
+    {
       "source": "/share/:token",
       "destination": "/api/share/:token"
     }
