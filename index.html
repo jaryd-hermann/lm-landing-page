@@ -580,6 +580,81 @@
       color: var(--text);
       margin-bottom: 18px;
     }
+    .try-prompt-word {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(48px, 9vw, 80px);
+      line-height: 1;
+      padding: 56px 24px;
+    }
+    .try-prompt-photo {
+      position: relative;
+      padding: 0;
+      border: none;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: url('image.png') center / cover no-repeat;
+      border-radius: var(--radius-card);
+    }
+    .try-photo-date {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+    .try-photo-shuffle {
+      position: absolute;
+      bottom: 14px; right: 14px;
+      width: 36px; height: 36px;
+      background: rgba(0,0,0,0.55);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .try-photo-shuffle svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
+    .try-photo-tag {
+      position: absolute;
+      bottom: 14px; left: 14px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Toggle pills inline in 'Let's try it with [word] [photo] [question]' */
+    .try-toggle {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .try-toggle-pill {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .try-toggle-pill:hover { color: var(--text); }
+    .try-toggle-pill.active {
+      background: var(--accent);
+      color: var(--on-accent);
+      border-color: var(--accent);
+    }
     .try-explainer {
       display: flex;
       align-items: flex-start;
@@ -1202,41 +1277,82 @@
       enqueuePromptCards();
     }
 
+    // ── Try-card variants (word / photo / question)
+    const tryVariants = {
+      word: {
+        promptHTML: '<div class="try-prompt try-prompt-word">footprint</div>',
+        explainer: 'Read the word and let it take you somewhere. What memory or association does it unlock?'
+      },
+      photo: {
+        promptHTML: '<div class="try-prompt try-prompt-photo"><div class="try-photo-date">Mar 15, 2026</div><div class="try-photo-tag">this would be a photo you took</div><div class="try-photo-shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg></div></div>',
+        explainer: 'What was happening here? Where does this photo take you or what does it remind you of?'
+      },
+      question: {
+        promptHTML: '<div class="try-prompt">What\'s something that happened these past few days you\'d tell a friend at dinner?</div>',
+        explainer: 'Think about little things — a conversation, a meal, something someone you love said to you. Not the big symbolic moments. The ones you\'ll forget.'
+      }
+    };
+
+    function renderTryCard(type) {
+      const card = document.getElementById('try-card');
+      if (!card) return;
+      const v = tryVariants[type] || tryVariants.word;
+      card.innerHTML = `
+        ${v.promptHTML}
+        <div class="try-explainer">
+          <img src="thread-icon.png" alt="" class="ellie-avatar"/>
+          <div class="try-explainer-text">${v.explainer}</div>
+        </div>
+        <div class="try-meta">You'll have 2 minutes to share</div>
+        <div class="try-actions">
+          <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="try-btn try-btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85-.4 2.27-2.36 4.05-4.93 4.05s-4.53-1.78-4.93-4.05c-.08-.49-.49-.85-.98-.85-.62 0-1.09.55-1 1.16.49 3 2.89 5.34 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.06c3.02-.44 5.42-2.78 5.91-5.78.1-.61-.38-1.16-1-1.16z"/></svg>
+            Start Speaking
+          </a>
+          <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="try-btn try-btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Start Typing
+          </a>
+        </div>`;
+    }
+
     // ── Intro sequence
     function playIntro() {
       introPhase = true;
       const el = createEllie(introMessage);
       enqueueMessage(el, true);
 
-      // "Let's try it" mockup
-      enqueueMessage(createEllie('<strong>Let\'s try it.</strong>'), true);
+      // "Let's try it" with toggleable prompt type
       enqueue(done => {
         const dots = createThinking();
         chat.appendChild(dots);
-        setTimeout(done, 1000);
+        setTimeout(done, TYPING_DELAY);
       });
       enqueue(done => {
         removeThinking();
+        const intro = document.createElement('div');
+        intro.className = 'msg msg-ellie';
+        intro.innerHTML = `<img src="thread-icon.png" alt="Ellie" class="ellie-avatar"/><div class="ellie-body"><strong>Let's try it</strong> with a <span class="try-toggle"><button class="try-toggle-pill active" data-type="word">word</button><button class="try-toggle-pill" data-type="photo">photo</button><button class="try-toggle-pill" data-type="question">question</button></span></div>`;
+        chat.appendChild(intro);
+        void intro.offsetHeight;
+        intro.classList.add('visible');
+        setTimeout(done, 300);
+
+        // Wire up toggle pills (defined below)
+        const pills = intro.querySelectorAll('.try-toggle-pill');
+        pills.forEach(p => p.addEventListener('click', () => {
+          pills.forEach(x => x.classList.remove('active'));
+          p.classList.add('active');
+          renderTryCard(p.dataset.type);
+        }));
+      });
+
+      enqueue(done => {
         const card = document.createElement('div');
         card.className = 'try-card';
-        card.innerHTML = `
-          <div class="try-prompt">What's the little moment you want to capture?</div>
-          <div class="try-explainer">
-            <img src="thread-icon.png" alt="" class="ellie-avatar"/>
-            <div class="try-explainer-text">Think about little things — a conversation, a meal, something someone you love said to you. Not the big symbolic moments. The ones you'll forget.</div>
-          </div>
-          <div class="try-meta">You'll have 2 minutes to share</div>
-          <div class="try-actions">
-            <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="try-btn try-btn-primary">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85-.4 2.27-2.36 4.05-4.93 4.05s-4.53-1.78-4.93-4.05c-.08-.49-.49-.85-.98-.85-.62 0-1.09.55-1 1.16.49 3 2.89 5.34 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.06c3.02-.44 5.42-2.78 5.91-5.78.1-.61-.38-1.16-1-1.16z"/></svg>
-              Start Speaking
-            </a>
-            <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="try-btn try-btn-secondary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-              Start Typing
-            </a>
-          </div>`;
+        card.id = 'try-card';
         chat.appendChild(card);
+        renderTryCard('word');
         showElement(card);
         setTimeout(done, 300);
       });
