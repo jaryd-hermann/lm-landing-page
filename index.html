@@ -190,6 +190,18 @@
       color: var(--premium);
       font-weight: 500;
     }
+    .hero-no-blank {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-no-blank img {
+      position: absolute;
+      left: 0;
+      bottom: -14px;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
 
     /* ─── CHAT ────────────────────────────────── */
     .chat-section {
@@ -844,7 +856,7 @@
         <img src="thread-icon.png" alt="" class="hero-fixes-icon" />
         <span class="hero-fixes-lm">Little Moments</span>
       </div>
-      <div class="hero-fixes-desc">is a <span class="hero-fixes-highlight">free daily moments journal</span> that's easy to stick with.<br/>No blank pages.</div>
+      <div class="hero-fixes-desc">is a <span class="hero-fixes-highlight">free daily moments journal</span> that's easy to stick with.<br/><span class="hero-no-blank">No blank pages.<img src="line-7.png" alt="" /></span></div>
     </div>
   </section>
 
