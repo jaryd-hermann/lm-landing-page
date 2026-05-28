@@ -1,16 +1,8 @@
 {
   "rewrites": [
-    {
-      "source": "/terms",
-      "destination": "/legal.html"
-    },
-    {
-      "source": "/privacy",
-      "destination": "/legal.html"
-    },
-    {
-      "source": "/share/:token",
-      "destination": "/api/share/:token"
-    }
+    { "source": "/terms",   "destination": "/legal.html" },
+    { "source": "/privacy", "destination": "/legal.html" },
+    { "source": "/share/chapter/:token", "destination": "/api/share/chapter/:token" },
+    { "source": "/share/:token",         "destination": "/api/share/:token" }
   ]
 }
