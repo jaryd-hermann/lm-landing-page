@@ -1,240 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <title>Little Moments — Keep the moments that matter</title>
-  <meta name="description" content="A two-minute daily practice that captures one story-worthy moment from your day." />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Moments — Remember what mattered today</title>
+<meta name="description" content="Most people can't remember what happened last Tuesday. One moment, a few words, under 60 seconds — Little Moments turns the days you'd forget into movies, chapters, and a real keepsake. Free on iPhone.">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Little Moments — Remember what mattered today">
+<meta property="og:description" content="One photo. A few words. Under 60 seconds. A private keepsake of your real life.">
+<meta property="og:image" content="https://getlittlemoments.com/hero.png">
+<meta property="og:url" content="https://getlittlemoments.com/">
+<meta name="twitter:card" content="summary_large_image">
 
-    :root {
-      --bg: #FFFFEB;
-      --ink: #1a1a1a;
-      --muted: rgba(26,26,26,0.55);
-      --accent: #f0d7ff;
-      --accent-dark: #d4a8f0;
-      --radius-pill: 9999px;
-      --font-display: 'Libre Baskerville', serif;
-      --font-ui: 'Roboto', sans-serif;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    html, body { height: 100%; }
-    body {
-      background-color: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-ui);
-      font-weight: 400;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-      overflow-x: hidden;
-    }
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#FFFFEB;}
+  .lm-wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,40px);}
+  .lm-hero{display:grid;grid-template-columns:1.05fr 0.95fr;align-items:center;gap:clamp(32px,5vw,72px);}
+  .lm-feat{display:flex;align-items:center;gap:clamp(40px,6vw,104px);}
+  .lm-feat-rev{flex-direction:row-reverse;}
+  .lm-feat>div{flex:1;min-width:0;}
+  .lm-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,56px);}
+  .lm-nav-links{display:flex;gap:clamp(20px,3vw,38px);align-items:center;}
+  .lm-foot{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;}
 
-    /* Texture overlay sits above the background color but below all content */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url('texture.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      pointer-events: none;
-      z-index: 0;
-      mix-blend-mode: multiply;
-      opacity: 0.9;
-    }
+  /* Screenshot slots: gradient + caption show until a real screenshot loads */
+  .lm-screen{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:2;}
+  .lm-screen-cap{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 14%;
+    font-family:'Roboto',sans-serif;font-size:13px;font-weight:500;line-height:1.5;color:rgba(255,255,255,0.82);letter-spacing:0.2px;}
 
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ─── MAIN ────────────────────────────────── */
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 64px;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 32px 48px;
-    }
-
-    .hero-image-wrap {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-    .hero-image-wrap img {
-      max-width: 100%;
-      max-height: 80vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 28px;
-    }
-    .content--mobile-top { display: none; }
-
-    .wordmark {
-      height: 56px;
-      width: auto;
-    }
-
-    .tagline {
-      font-family: var(--font-ui);
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 1.4;
-      color: var(--ink);
-      text-align: center;
-      max-width: 440px;
-    }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: var(--accent);
-      color: var(--ink);
-      font-family: var(--font-ui);
-      font-weight: 500;
-      font-size: 16px;
-      text-decoration: none;
-      padding: 16px 40px;
-      border-radius: var(--radius-pill);
-      border: 2px solid var(--ink);
-      box-shadow: 4px 4px 0 var(--ink);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-    .cta:hover {
-      background: var(--accent-dark);
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--ink);
-    }
-    .cta:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0 0 0 var(--ink);
-    }
-    .cta-icon {
-      width: 18px;
-      height: 18px;
-      fill: var(--ink);
-      flex-shrink: 0;
-    }
-
-    /* ─── FOOTER ──────────────────────────────── */
-    footer {
-      padding: 20px 48px 28px;
-      text-align: center;
-    }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .footer-links a {
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .footer-links a:hover { color: var(--ink); }
-    .footer-copy {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* ─── RESPONSIVE ──────────────────────────── */
-    @media (max-width: 768px) {
-      main {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 24px;
-        text-align: center;
-      }
-      .content--mobile-top { display: flex; }
-      .hero-image-wrap {
-        justify-content: center;
-      }
-      .hero-image-wrap img {
-        width: 100%;
-        max-width: 480px;
-        max-height: none;
-      }
-      .content {
-        align-items: center;
-      }
-      .tagline {
-        text-align: center;
-        font-size: 18px;
-      }
-      .wordmark {
-        height: 44px;
-      }
-      footer {
-        padding: 16px 24px 24px;
-      }
-    }
-  </style>
+  @media(max-width:900px){
+    .lm-hero{grid-template-columns:1fr;text-align:center;}
+    .lm-hero-cta{justify-content:center !important;}
+    .lm-hero-eyebrow{justify-content:center !important;}
+  }
+  @media(max-width:860px){
+    .lm-feat,.lm-feat-rev{flex-direction:column;text-align:center;gap:40px;}
+    .lm-steps{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto;}
+    .lm-nav-links{display:none;}
+  }
+  @media(max-width:520px){
+    .lm-hero-cta{flex-direction:column;align-items:stretch;}
+  }
+  @keyframes lmfloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+  .lm-animate .lm-feat>div{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);}
+  .lm-animate .lm-feat>div.lm-in{opacity:1;transform:none;}
+  .lm-animate .lm-feat>div:nth-child(2){transition-delay:.1s;}
+  @media(prefers-reduced-motion:reduce){.lm-animate .lm-feat>div{opacity:1 !important;transform:none !important;transition:none !important;}}
+  #lm-float{position:fixed;left:50%;bottom:22px;z-index:120;transform:translateX(-50%) translateY(170%);opacity:0;transition:transform .5s cubic-bezier(.2,.85,.25,1),opacity .4s;will-change:transform;}
+  #lm-float.lm-show{transform:translateX(-50%) translateY(0);opacity:1;}
+  #lm-float a{animation:lmpulse 2.6s ease-in-out infinite;}
+  @keyframes lmpulse{0%,100%{box-shadow:0 6px 0 #1A1A1A,0 0 0 0 rgba(212,168,240,.55);}50%{box-shadow:0 6px 0 #1A1A1A,0 0 0 18px rgba(212,168,240,0);}}
+  #lm-modal{opacity:0;transition:opacity .25s ease;}
+  #lm-modal.lm-open{opacity:1;}
+  #lm-modal .lm-modal-card{transform:translateY(18px) scale(.95);transition:transform .3s cubic-bezier(.2,.9,.25,1);}
+  #lm-modal.lm-open .lm-modal-card{transform:none;}
+</style>
 </head>
 <body>
-  <div class="page">
-    <main>
-      <div class="content content--mobile-top">
-        <img src="wordmark-little-moments-black.png" alt="Little Moments" class="wordmark" />
-        <div class="tagline">
-          A 60s daily journal habit you'll actually stick with. Try it for free to see why
-        </div>
-        <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="cta">
-          <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Capture first moment
-        </a>
-      </div>
-      <div class="hero-image-wrap">
-        <img src="hero.png" alt="Little Moments" />
-      </div>
-      <div class="content">
-        <img src="wordmark-little-moments-black.png" alt="Little Moments" class="wordmark" />
-        <div class="tagline">
-          A 60s daily journal habit you'll actually stick with. Try it for free to see why
-        </div>
-        <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" class="cta">
-          <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Capture first moment
-        </a>
-      </div>
-    </main>
 
-    <footer>
-      <div class="footer-links">
-        <a href="/terms">Terms &amp; Privacy</a>
-        <a href="https://www.the-diff.com" target="_blank" rel="noopener">Follow my build in public</a>
+<div style="background:#FFFFEB;font-family:'Roboto',sans-serif;color:#1A1A1A;overflow-x:hidden;position:relative;">
+  <div style="position:absolute;inset:0;pointer-events:none;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22140%22%20height=%22140%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.78%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22140%22%20height=%22140%22%20filter=%22url%28%23n%29%22/%3E%3C/svg%3E);opacity:0.45;mix-blend-mode:multiply;z-index:0;"></div>
+
+  <!-- ============ HERO ============ -->
+  <section class="lm-wrap" style="position:relative;z-index:1;padding-top:clamp(16px,2.5vw,32px);padding-bottom:clamp(20px,3vw,44px);">
+    <div class="lm-hero">
+      <div>
+        <div class="lm-hero-eyebrow" style="display:flex;align-items:center;gap:clamp(14px,2vw,24px);margin-bottom:28px;flex-wrap:wrap;">
+          <img src="wordmark-little-moments-black.png" alt="Little Moments" style="height:32px;width:auto;display:block;flex:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="display:inline-flex;gap:3px;">
+              <span style="color:#FFC100;font-size:19px;">★</span><span style="color:#FFC100;font-size:19px;">★</span><span style="color:#FFC100;font-size:19px;">★</span><span style="color:#FFC100;font-size:19px;">★</span><span style="color:#FFC100;font-size:19px;">★</span>
+            </div>
+            <span style="font-size:15px;font-weight:500;color:rgba(26,26,26,0.6);">The easy habit for people who want to notice real life</span>
+          </div>
+        </div>
+        <h1 style="font-family:'Archivo Black',sans-serif;font-size:clamp(46px,7.4vw,104px);line-height:0.98;letter-spacing:-0.03em;margin:0;">Remember what <span style="background:#F0D7FF;padding:0 0.1em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">mattered</span> today</h1>
+        <p style="font-family:'Roboto',sans-serif;font-weight:400;font-size:clamp(17px,2.3vw,22px);line-height:1.55;color:rgba(26,26,26,0.66);margin:20px 0 0;max-width:480px;">One moment. Say or type a few words. Under 60 seconds. We turn the days you'd forget into movies, chapters, and a real keepsake.</p>
+        <div class="lm-hero-cta" style="display:flex;gap:16px;align-items:center;margin-top:24px;flex-wrap:wrap;">
+          <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" data-appstore style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;background:#1A1A1A;color:#fff;padding:15px 26px;border-radius:16px;box-shadow:0 8px 22px -6px rgba(26,26,26,0.5);">
+            <svg width="24" height="24" viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            <span style="text-align:left;line-height:1.05;"><span style="display:block;font-size:11px;font-weight:400;opacity:0.8;letter-spacing:0.3px;">Download on the</span><span style="display:block;font-size:20px;font-weight:700;font-family:'Roboto',sans-serif;">App Store</span></span>
+          </a>
+        </div>
       </div>
-      <p class="footer-copy">&copy; 2026 Little Moments. All rights reserved.</p>
-    </footer>
+
+      <div class="lm-phonewrap" style="position:relative;display:flex;justify-content:center;">
+        <svg width="84" height="84" viewBox="0 0 84 84" style="position:absolute;left:2%;top:4%;z-index:5;"><path d="M42 6 L49 35 L78 42 L49 49 L42 78 L35 49 L6 42 L35 35 Z" fill="#FFC100" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg width="132" height="116" viewBox="0 0 132 116" fill="none" stroke="#D4A8F0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:50%;bottom:9%;transform:translateX(104px);z-index:10;"><path d="M114 16 C134 62, 94 102, 30 95"/><path d="M30 95 L56 101 M30 95 L45 73"/></svg>
+        <div style="--r:0deg;animation:lmfloat 6s ease-in-out infinite;position:relative;width:clamp(240px,28vw,332px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 50px 90px -24px rgba(0,0,0,0.6),0 0 0 1px rgba(0,0,0,0.45);z-index:2;">
+          <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(255,232,200,0.62),transparent 58%),linear-gradient(158deg,#dcab6c,#9c5f43 60%,#3a2622);border-radius:11%/5%;overflow:hidden;">
+            <video id="lm-hero-video" src="splash.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></video>
+            <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:17px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+          </div>
+        </div>
+        <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" data-appstore style="position:absolute;left:50%;bottom:clamp(22px,6%,52px);transform:translateX(-50%);z-index:9;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;background:#F0D7FF;color:#1A1A1A;font-weight:700;font-size:clamp(12px,1.35vw,15px);letter-spacing:0.2px;padding:11px clamp(13px,1.5vw,18px);border:2.5px solid #1A1A1A;border-radius:99px;box-shadow:0 5px 0 #1A1A1A;text-decoration:none;"><svg width="16" height="16" viewBox="0 0 24 24" style="flex:none;"><path d="M12 2 L14.6 9.4 L22 12 L14.6 14.6 L12 22 L9.4 14.6 L2 12 L9.4 9.4 Z" fill="#1A1A1A"/></svg>Capture your first moment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE / PROMISE STRIP ============ -->
+  <section style="position:relative;z-index:1;background:#1A1A1A;color:#FFFFEB;padding:clamp(48px,6vw,76px) 0;">
+    <div class="lm-wrap" style="text-align:center;">
+      <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,4.8vw,56px);line-height:1.08;letter-spacing:-0.02em;margin:0 auto clamp(12px,1.8vw,18px);max-width:920px;">Most people can't remember <span style="background:#E8654A;color:#1A1A1A;padding:0 0.1em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">what happened last Tuesday</span></h2>
+    <p style="font-style:italic;font-size:clamp(15px,1.8vw,19px);font-weight:500;letter-spacing:0.3px;color:rgba(255,255,235,0.7);margin:clamp(16px,2.4vw,28px) 0 clamp(28px,4vw,44px);">Little Moments fixes that</p>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(20px,5vw,64px);">
+      <div style="font-family:'Archivo Black',sans-serif;font-size:clamp(28px,4vw,46px);letter-spacing:-0.02em;">1 moment</div>
+      <span style="color:#D4A8F0;font-size:clamp(24px,3vw,38px);">·</span>
+      <div style="font-family:'Archivo Black',sans-serif;font-size:clamp(28px,4vw,46px);letter-spacing:-0.02em;">60 seconds</div>
+      <span style="color:#D4A8F0;font-size:clamp(24px,3vw,38px);">·</span>
+      <div style="font-family:'Archivo Black',sans-serif;font-size:clamp(28px,4vw,46px);letter-spacing:-0.02em;">every day</div>
+      <span style="color:#D4A8F0;font-size:clamp(24px,3vw,38px);">·</span>
+      <div style="font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:clamp(22px,3vw,38px);color:#F0D7FF;">a lifetime keepsake</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features" class="lm-wrap" style="position:relative;z-index:1;padding-top:clamp(70px,9vw,130px);padding-bottom:clamp(20px,3vw,40px);">
+    <div style="text-align:center;max-width:680px;margin:0 auto clamp(56px,7vw,96px);">
+      <div style="font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;color:#D4A8F0;text-transform:uppercase;margin-bottom:16px;">The whole idea</div>
+      <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(34px,5vw,62px);line-height:1.02;letter-spacing:-0.02em;margin:0;">Capturing a day should feel like <span style="background:#F0D7FF;padding:0 0.1em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">nothing</span></h2>
+      <p style="font-size:clamp(17px,2.2vw,21px);line-height:1.55;color:rgba(26,26,26,0.62);margin:24px auto 0;max-width:560px;">No blank pages. No streak guilt. Just a photo from your day and a few honest words — and the app does the remembering for you.</p>
+    </div>
+
+    <!-- FEATURE 1 -->
+    <div class="lm-feat" style="margin-bottom:clamp(80px,11vw,150px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">Your camera roll, <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">actually Captured</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;">Pick a photo from your day. <span style="color:#E8654A;font-weight:700;">Say</span> or <span style="color:#D98A1A;font-weight:700;">type</span> what made it matter</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(255,232,205,0.6),transparent 58%),linear-gradient(160deg,#e0976a,#b85f6a 52%,#3a1f2e);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Capture screenshot →<br>screens/capture.png</div>
+              <img class="lm-screen" src="screens/capture.png" alt="Capture screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 2 (reversed) -->
+    <div class="lm-feat lm-feat-rev" style="margin-bottom:clamp(80px,11vw,150px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">A private <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">Capsule</span> of your real life</h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;">Browse by day, flip through memories, or see your whole month at a glance.</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(-5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(236,240,225,0.6),transparent 58%),linear-gradient(160deg,#9aa088,#5a4636 70%,#241c18);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Capsule screenshot →<br>screens/capsule.png</div>
+              <img class="lm-screen" src="screens/capsule.png" alt="Capsule screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 3 -->
+    <div class="lm-feat" style="margin-bottom:clamp(80px,11vw,150px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">Catch up on life in <span style="background:#FECFB4;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">one sitting</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;"><span style="color:#E8654A;font-weight:700;">Magic Fill</span> finds days with photos but no moment, then saves several at once.</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(255,232,200,0.62),transparent 58%),linear-gradient(155deg,#dcab6c,#a86442 60%,#3a2622);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Magic Fill screenshot →<br>screens/magicfill.png</div>
+              <img class="lm-screen" src="screens/magicfill.png" alt="Magic Fill screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 4 (reversed) — This day, years ago -->
+    <div class="lm-feat lm-feat-rev" style="margin-bottom:clamp(80px,11vw,150px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">On this day, <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">years ago</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;">Don't just create the story of your year, fill up your Capsule and create a movie of your life!</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(-5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(255,226,205,0.6),transparent 58%),linear-gradient(162deg,#e0a06a,#b06a7c 52%,#341f2e);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">This Day screenshot →<br>screens/thisday.png</div>
+              <img class="lm-screen" src="screens/thisday.png" alt="On this day screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 5 — Chapters -->
+    <div class="lm-feat" style="margin-bottom:clamp(20px,3vw,40px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">Watch your life, <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">as a movie</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;"><span style="color:#E8654A;font-weight:700;">Auto-made video montages</span> and <span style="color:#D98A1A;font-weight:700;">personalized-written chapters</span> from the moments you capture</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(255,224,205,0.58),transparent 58%),linear-gradient(160deg,#b9683f,#7a3a4a 55%,#1f1722);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Chapters screenshot →<br>screens/chapters.png</div>
+              <img class="lm-screen" src="screens/chapters.png" alt="Chapters screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURE 6 — CONNECT ============ -->
+  <section class="lm-wrap" style="position:relative;z-index:1;padding-top:clamp(40px,5vw,70px);padding-bottom:clamp(70px,9vw,120px);">
+    <div class="lm-feat lm-feat-rev" style="margin-bottom:clamp(80px,11vw,150px);">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">See your life's <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">patterns</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;">We link the people, places, and themes that run across your moments.</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(-5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 32%,rgba(224,228,238,0.52),transparent 58%),linear-gradient(160deg,#6f7a96,#3a3f55 60%,#191924);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Connect screenshot →<br>screens/connect.png</div>
+              <img class="lm-screen" src="screens/connect.png" alt="Connect screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 7 — Brain graph -->
+    <div class="lm-feat">
+      <div>
+        <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,3.6vw,48px);line-height:1.04;letter-spacing:-0.02em;margin:0;">Explore your <span style="background:#F0D7FF;padding:0 0.14em;border-radius:0.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone;">brain graph</span></h3>
+        <p style="font-size:clamp(17px,2.1vw,20px);line-height:1.6;color:rgba(26,26,26,0.78);font-weight:500;margin:24px 0 0;max-width:520px;">Discover how your little moments group across time in a <span style="color:#E8654A;font-weight:700;">filterable graph</span>.</p>
+      </div>
+      <div>
+        <div class="lm-phonewrap" style="display:flex;justify-content:center;">
+          <div style="position:relative;transform:rotate(5deg);width:clamp(232px,27vw,318px);aspect-ratio:1290/2796;background:linear-gradient(135deg,#262629,#0a0a0b);border-radius:14%/6.4%;padding:2.7%;box-shadow:0 44px 80px -24px rgba(0,0,0,0.55),0 0 0 1px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:100%;height:100%;background:radial-gradient(130% 70% at 50% 30%,rgba(176,160,232,0.42),transparent 58%),linear-gradient(160deg,#3a3552,#23243a 55%,#0b0b14);border-radius:11%/5%;overflow:hidden;">
+              <div class="lm-screen-cap">Brain graph screenshot →<br>screens/brain.png</div>
+              <img class="lm-screen" src="screens/brain.png" alt="Brain graph screen" onerror="this.style.display='none'">
+              <div style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:32%;height:3.2%;min-height:16px;background:#000;border-radius:99px;z-index:4;pointer-events:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" style="position:relative;z-index:1;background:#1A1A1A;color:#FFFFEB;padding:clamp(70px,9vw,130px) 0;">
+    <div class="lm-wrap">
+      <div style="text-align:center;max-width:660px;margin:0 auto clamp(48px,6vw,80px);">
+        <div style="font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;color:#D4A8F0;text-transform:uppercase;margin-bottom:16px;">How it works</div>
+        <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(34px,5vw,60px);line-height:1.02;letter-spacing:-0.02em;margin:0;">One photo or video, everyday</h2>
+      </div>
+      <div class="lm-steps">
+        <div style="text-align:center;">
+          <div style="width:78px;height:78px;margin:0 auto 24px;border-radius:50%;background:#F0D7FF;color:#1A1A1A;border:2.5px solid #FFFFEB;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:34px;">1</div>
+          <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(22px,2.6vw,28px);margin:0 0 12px;letter-spacing:-0.01em;">Pick a moment</h3>
+          <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(255,255,235,0.6);margin:0;max-width:300px;margin-left:auto;margin-right:auto;">Choose one from your camera roll that day, or snap a new photo.</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:78px;height:78px;margin:0 auto 24px;border-radius:50%;background:#FECFB4;color:#1A1A1A;border:2.5px solid #FFFFEB;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:34px;">2</div>
+          <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(22px,2.6vw,28px);margin:0 0 12px;letter-spacing:-0.01em;">Say what mattered</h3>
+          <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(255,255,235,0.6);margin:0;max-width:300px;margin-left:auto;margin-right:auto;">Speak it out loud or type a line. Honest beats polished.</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:78px;height:78px;margin:0 auto 24px;border-radius:50%;background:#FFC100;color:#1A1A1A;border:2.5px solid #FFFFEB;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:34px;">3</div>
+          <h3 style="font-family:'Archivo Black',sans-serif;font-size:clamp(22px,2.6vw,28px);margin:0 0 12px;letter-spacing:-0.01em;">Watch it build</h3>
+          <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(255,255,235,0.6);margin:0;max-width:300px;margin-left:auto;margin-right:auto;">Your Capsule, chapters, and montages grow on their own.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUOTE ============ -->
+  <section class="lm-wrap" style="position:relative;z-index:1;padding:clamp(70px,9vw,120px) 0;text-align:center;">
+    <div style="max-width:860px;margin:0 auto;">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="margin:0 auto 28px;display:block;"><path d="M32 8 L38 26 L56 32 L38 38 L32 56 L26 38 L8 32 L26 26 Z" fill="#F0D7FF" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <p style="font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:clamp(24px,3.6vw,44px);line-height:1.34;color:#1A1A1A;margin:0;">"I've started a dozen journals and quit every one. This is the first that's still going six months later — because it never asks for more than a minute."</p>
+      <div style="margin-top:30px;font-size:16px;font-weight:600;color:rgba(26,26,26,0.55);letter-spacing:0.3px;">— an early Little Moments user</div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="lm-wrap" style="position:relative;z-index:1;padding-bottom:clamp(70px,9vw,120px);max-width:840px;">
+    <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-0.02em;text-align:center;margin:0 0 clamp(36px,5vw,56px);">Questions, answered</h2>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <details style="background:#fff;border:2px solid #1A1A1A;border-radius:20px;padding:22px 26px;">
+        <summary style="font-family:'Roboto',sans-serif;font-weight:700;font-size:clamp(17px,2.1vw,21px);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;">Is it really under a minute a day?<span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#D4A8F0;">+</span></summary>
+        <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(26,26,26,0.64);margin:16px 0 0;">Yes. Pick a photo, add a line by voice or text, done. Most moments take about 30 seconds — and Magic Fill lets you catch up several days at once.</p>
+      </details>
+      <details style="background:#fff;border:2px solid #1A1A1A;border-radius:20px;padding:22px 26px;">
+        <summary style="font-family:'Roboto',sans-serif;font-weight:700;font-size:clamp(17px,2.1vw,21px);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;">Who can see my moments?<span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#D4A8F0;">+</span></summary>
+        <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(26,26,26,0.64);margin:16px 0 0;">No one but you. Little Moments is a private Capsule, not a social feed. There are no likes, no followers, and nothing is public by default.</p>
+      </details>
+      <details style="background:#fff;border:2px solid #1A1A1A;border-radius:20px;padding:22px 26px;">
+        <summary style="font-family:'Roboto',sans-serif;font-weight:700;font-size:clamp(17px,2.1vw,21px);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;">What if I miss a few days?<span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#D4A8F0;">+</span></summary>
+        <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(26,26,26,0.64);margin:16px 0 0;">Nothing breaks and nothing nags you. Magic Fill surfaces the days you have photos but no moment, so you can gently backfill whenever you like.</p>
+      </details>
+      <details style="background:#fff;border:2px solid #1A1A1A;border-radius:20px;padding:22px 26px;">
+        <summary style="font-family:'Roboto',sans-serif;font-weight:700;font-size:clamp(17px,2.1vw,21px);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;">What does it cost?<span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#D4A8F0;">+</span></summary>
+        <p style="font-size:clamp(16px,1.9vw,18px);line-height:1.6;color:rgba(26,26,26,0.64);margin:16px 0 0;">Little Moments is free to download and start capturing. For long term usage like infinite Capsule history and unlimited Threads and Chapters, you can upgrade to an optional premium membership.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section id="get" class="lm-wrap" style="position:relative;z-index:1;padding-bottom:clamp(70px,9vw,120px);">
+    <div style="position:relative;background:#F0D7FF;border:3px solid #1A1A1A;border-radius:36px;padding:clamp(48px,7vw,96px) clamp(28px,5vw,64px);text-align:center;overflow:hidden;box-shadow:0 16px 0 #1A1A1A;">
+      <svg width="90" height="90" viewBox="0 0 90 90" style="position:absolute;left:6%;top:14%;opacity:0.9;"><path d="M45 8 L52 38 L82 45 L52 52 L45 82 L38 52 L8 45 L38 38 Z" fill="#FFC100" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <svg width="64" height="64" viewBox="0 0 64 64" style="position:absolute;right:8%;bottom:16%;opacity:0.9;"><path d="M32 6 L37 26 L57 32 L37 38 L32 58 L27 38 L7 32 L27 26 Z" fill="#FFFFEB" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(34px,5.5vw,72px);line-height:0.98;letter-spacing:-0.03em;margin:0;position:relative;">Start your first<br>moment today</h2>
+      <p style="font-size:clamp(17px,2.2vw,22px);line-height:1.5;color:rgba(26,26,26,0.7);margin:24px auto 0;max-width:460px;position:relative;">It takes a minute. In a year, it'll be the thing you're most glad you kept.</p>
+      <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-top:38px;flex-wrap:wrap;position:relative;">
+        <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" data-appstore style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;background:#1A1A1A;color:#fff;padding:16px 30px;border-radius:16px;box-shadow:0 8px 0 rgba(26,26,26,0.35);">
+          <svg width="26" height="26" viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+          <span style="text-align:left;line-height:1.05;"><span style="display:block;font-size:11px;font-weight:400;opacity:0.8;letter-spacing:0.3px;">Download on the</span><span style="display:block;font-size:21px;font-weight:700;">App Store</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(26,26,26,0.1);padding:clamp(40px,5vw,60px) 0;">
+    <div class="lm-wrap lm-foot" style="align-items:center;">
+      <img src="wordmark-little-moments-black.png" alt="Little Moments" style="height:28px;width:auto;display:block;">
+
+      <div style="display:flex;gap:clamp(18px,3vw,32px);flex-wrap:wrap;align-items:center;">
+        <a href="#features" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">Features</a>
+        <a href="#how" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">How it works</a>
+        <a href="#faq" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">FAQ</a>
+        <a href="/privacy" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">Privacy</a>
+        <a href="/terms" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">Terms</a>
+        <a href="https://www.the-diff.com" target="_blank" rel="noopener" style="text-decoration:none;color:rgba(26,26,26,0.6);font-size:15px;font-weight:500;">Follow the build</a>
+      </div>
+    </div>
+    <div class="lm-wrap" style="margin-top:28px;font-size:14px;color:rgba(26,26,26,0.4);">© 2026 Little Moments · Made with care for the days you'd forget.</div>
+  </footer>
+
+  <!-- ============ FLOATING DOWNLOAD CTA ============ -->
+  <div id="lm-float">
+    <a href="https://apps.apple.com/us/app/little-moments-a-2min-journal/id6761054988" data-appstore style="display:inline-flex;align-items:center;gap:11px;background:#F0D7FF;color:#1A1A1A;font-weight:700;font-size:clamp(14px,1.6vw,16px);letter-spacing:0.2px;padding:15px clamp(20px,2.4vw,28px);border:3px solid #1A1A1A;border-radius:99px;text-decoration:none;box-shadow:0 6px 0 #1A1A1A;white-space:nowrap;">
+      <svg width="18" height="18" viewBox="0 0 384 512" fill="#1A1A1A" style="flex:none;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      Capture your first moment
+    </a>
   </div>
+
+  <!-- ============ QR MODAL (desktop) ============ -->
+  <div id="lm-modal" style="position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(26,26,26,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);">
+    <div class="lm-modal-card" style="position:relative;background:#FFFFEB;border:3px solid #1A1A1A;border-radius:34px;padding:clamp(32px,4vw,48px) clamp(28px,4vw,44px);width:min(440px,92vw);text-align:center;box-shadow:0 18px 0 -2px #1A1A1A;font-family:'Roboto',sans-serif;">
+      <button data-close="1" aria-label="Close" style="position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:2.5px solid #1A1A1A;background:#fff;font-size:24px;line-height:1;cursor:pointer;font-weight:700;color:#1A1A1A;display:flex;align-items:center;justify-content:center;">×</button>
+      <svg width="58" height="58" viewBox="0 0 58 58" style="display:block;margin:0 auto 18px;"><path d="M29 5 L35 23 L53 29 L35 35 L29 53 L23 35 L5 29 L23 23 Z" fill="#FFC100" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <div style="font-family:'Archivo Black',sans-serif;font-size:clamp(26px,3.4vw,34px);line-height:1.0;letter-spacing:-0.02em;">Scan to start <span style="background:#F0D7FF;padding:0 0.12em;border-radius:0.12em;">capturing</span></div>
+      <p style="font-size:16px;line-height:1.5;color:rgba(26,26,26,0.66);margin:14px auto 26px;max-width:300px;">Point your phone camera at the code to download Little Moments on the App Store.</p>
+      <div style="display:inline-block;background:#fff;border:3px solid #1A1A1A;border-radius:24px;padding:14px;box-shadow:0 8px 0 #1A1A1A;">
+        <img src="flowcode.png" alt="Scan to download Little Moments" style="display:block;width:min(232px,58vw);height:auto;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hero video autoplay fallback + reveal/float/QR interactions -->
+<script>
+(function(){
+  function go(){
+    var v=document.getElementById('lm-hero-video');
+    if(v){ v.muted=true; v.defaultMuted=true; v.loop=true; v.playsInline=true;
+      v.addEventListener('ended',function(){ v.currentTime=0; var q=v.play&&v.play(); if(q&&q.catch){q.catch(function(){});} });
+      var p=v.play&&v.play(); if(p&&p.catch){p.catch(function(){});} }
+    else { setTimeout(go,200); }
+  }
+  setTimeout(go,300);
+})();
+</script>
+<script src="lm-interactions.js"></script>
 </body>
 </html>
